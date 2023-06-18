@@ -11,6 +11,7 @@ const useWeatherFetch = (location) => {
         .then((res) => res.json())
         .then((data) => {
           setWeather(data);
+          console.log(data);
         })
         .catch(() => console.log("Failed to load weather data"));
     }
@@ -18,7 +19,20 @@ const useWeatherFetch = (location) => {
 
   return { weather, fetchWeatherData };
 };
-
+const getWindDirection = (degree) => {
+  const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
+  const index = Math.round((degree % 360) / 45);
+  return directions[index];
+};
+const getHumidityDescription = (humidity) => {
+    if (humidity < 30) {
+      return "Dry";
+    } else if (humidity >= 30 && humidity <= 70) {
+      return "Moderate";
+    } else {
+      return "Humid";
+    }
+  };
 const Fetch = () => {
   const [location, setLocation] = useState("");
   const { weather, fetchWeatherData } = useWeatherFetch(location);
@@ -32,7 +46,6 @@ const Fetch = () => {
 
   return (
     <div>
-      <h2>Weather APP</h2>
       <form onSubmit={handleOnSubmit} className="WeatherContainer">
         <input
           type="text"
@@ -50,7 +63,15 @@ const Fetch = () => {
           <p>Country: {weather.sys.country}</p>
           <p>Temperature: {weather.main.temp}°C</p>
           <p>Weather: {weather.weather[0].description}</p>
-          <br />
+          <p>Wind speed: {weather.wind.speed} m/s</p>
+          <p>
+            Wind direction: {weather.wind.deg}°
+            {getWindDirection(weather.wind.deg)}
+          </p>
+          <p>Humidity: {weather.main.humidity}% ({getHumidityDescription(weather.main.humidity)})</p>
+          <p>Pressure: {weather.main.pressure} hPa</p>
+          <p>Visibility: {weather.visibility} meters</p>
+          <p>Cloudiness: {weather.clouds.all}%</p>
           <p>Visual display of current weather:</p>
           {weather.weather[0].icon && (
             <img
@@ -60,7 +81,11 @@ const Fetch = () => {
           )}
         </div>
       ) : (
-        checkCondition && <p>No weather data found for the given location</p>
+        checkCondition && (
+          <p className="errorMessage">
+            No weather data found for the given location
+          </p>
+        )
       )}
     </div>
   );
