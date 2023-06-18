@@ -25,14 +25,34 @@ const getWindDirection = (degree) => {
   return directions[index];
 };
 const getHumidityDescription = (humidity) => {
-    if (humidity < 30) {
-      return "Dry";
-    } else if (humidity >= 30 && humidity <= 70) {
-      return "Moderate";
-    } else {
-      return "Humid";
-    }
-  };
+  if (humidity < 30) {
+    return "Dry";
+  } else if (humidity >= 30 && humidity <= 70) {
+    return "Moderate";
+  } else {
+    return "Humid";
+  }
+};
+const getVisibilityDescription = (visibility) => {
+  if (visibility >= 1000) {
+    return "Excellent";
+  } else if (visibility >= 500 && visibility < 1000) {
+    return "Good";
+  } else if (visibility >= 100 && visibility < 500) {
+    return "Moderate";
+  } else {
+    return "Poor";
+  }
+};
+const getCloudinessDescription = (cloudiness) => {
+  if (cloudiness < 20) {
+    return "Clear";
+  } else if (cloudiness >= 20 && cloudiness <= 60) {
+    return "Partly Cloudy";
+  } else {
+    return "Cloudy";
+  }
+};
 const Fetch = () => {
   const [location, setLocation] = useState("");
   const { weather, fetchWeatherData } = useWeatherFetch(location);
@@ -62,23 +82,34 @@ const Fetch = () => {
           <p>Search: {weather.name}</p>
           <p>Country: {weather.sys.country}</p>
           <p>Temperature: {weather.main.temp}°C</p>
-          <p>Weather: {weather.weather[0].description}</p>
           <p>Wind speed: {weather.wind.speed} m/s</p>
           <p>
             Wind direction: {weather.wind.deg}°
             {getWindDirection(weather.wind.deg)}
           </p>
-          <p>Humidity: {weather.main.humidity}% ({getHumidityDescription(weather.main.humidity)})</p>
+          <p>
+            Humidity: {weather.main.humidity}% (
+            {getHumidityDescription(weather.main.humidity)})
+          </p>
           <p>Pressure: {weather.main.pressure} hPa</p>
-          <p>Visibility: {weather.visibility} meters</p>
-          <p>Cloudiness: {weather.clouds.all}%</p>
+          <p>
+            Visibility: {weather.visibility / 1000} km (
+            {getVisibilityDescription(weather.visibility)})
+          </p>
+          <p>
+            Cloudiness: {weather.clouds.all}% (
+            {getCloudinessDescription(weather.clouds.all)})
+          </p>
           <p>Visual display of current weather:</p>
           {weather.weather[0].icon && (
-            <img
-              src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}
-              alt="Weather Icon"
-            />
+            <div className="weatherIcon">
+              <img
+                src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}
+                alt="Weather Icon"
+              />
+            </div>
           )}
+          <p>Description: {weather.weather[0].description}</p>
         </div>
       ) : (
         checkCondition && (

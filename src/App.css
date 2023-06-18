@@ -3,7 +3,7 @@
 }
 
 body {
-  color: white
+  color: white;
 }
 
 .App {
@@ -14,8 +14,10 @@ body {
   position: absolute;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   object-fit: cover;
   z-index: -1;
 }
@@ -65,4 +67,10 @@ button:focus {
 .errorMessage {
   color: red;
   margin-top: 20px;
+}
+
+.weatherIcon {
+  width: 50px;
+  margin: 0 auto;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
