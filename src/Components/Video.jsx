@@ -1,7 +1,7 @@
 import React from "react";
 import videoBackground from "../Images/Raindrops_4K_Living_Background.mp4";
 
-const Main = () => {
+const Video = () => {
   return (
     <div>
       <video autoPlay muted loop className="backgroundVideo">
@@ -12,4 +12,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default Video;
