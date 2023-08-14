@@ -2,24 +2,9 @@
   box-sizing: border-box;
 }
 
-body {
-  color: white;
-}
-
 .App {
   text-align: center;
 }
-
-.backgroundVideo {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  object-fit: cover;
-  z-index: -10;
-  height: 100vh;
-}
-
 
 input {
   background-color: #f1f1f1;
@@ -68,14 +53,18 @@ button:focus {
 }
 
 .weatherIcon {
-  width: 50px;
+  /* width: 50px; */
   margin: 0 auto;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  
 }
-
+.weatherIcon > img{
+width: 100px;
+filter: drop-shadow(0 0 30px #ffffff);
+}
 @media only screen and (max-width: 400px) {
   input {
     margin-right: 0;
+    max-width: 60vw;
   }
 
   button {
@@ -87,8 +76,7 @@ button:focus {
   }
 }
 
-@media only screen and (max-width: 1200px) {
-  .backgroundVideo {
-    height: 150vh;
-  }
+.noWeatherIcon{
+  width: 50px;
+  background-color: #3277d6;
 }

@@ -1,10 +1,10 @@
 import "./App.css";
-import Video from "./Components/Video";
+import Main from "./Components/Main";
 
 function App() {
   return (
     <div className="App">
-      <Video />
+      <Main />
     </div>
   );
 }
