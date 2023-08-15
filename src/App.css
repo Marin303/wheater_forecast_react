@@ -1,9 +1,14 @@
 * {
   box-sizing: border-box;
 }
-
+body{
+  background-image: linear-gradient(to right, #DECBA4, #3E5151);
+}
 .App {
   text-align: center;
+}
+h1{
+  color: white;
 }
 
 input {
@@ -35,40 +40,55 @@ button:focus {
   outline: none;
 }
 
-.weatherValues {
-  background-color: rgba(241, 241, 241, 0.3);
-  border-radius: 5px;
-  padding: 10px;
-  max-width: 60%;
-  margin: 50px auto;
-  display: flex;
-  gap: 5px;
-  justify-content: center;
-  flex-wrap: wrap;
+.errorMessage {
+  color: red;
+ 
 }
 
+.weatherImg img {
+  background-color: #3277d6;
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+}
 
-.weatherValues p {
+.weatherContainer {
+  margin: 1rem auto;
+  padding: 1rem;
+  background: url(./Images/clouds.png) no-repeat center / cover;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  font-size: 0.75rem;
-  width: 100px;
-  height: 100px;
-  color: rgb(32, 42, 49);
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
-.errorMessage {
-  color: red;
-  margin-top: 20px;
+.description {
+  margin: 10px;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(4, auto);
+  gap: 1rem;
 }
 
-.weatherValues img {
-  width: 150px;
+.description p {
   border-radius: 10px;
-  /* filter: drop-shadow(0 0 30px #ffffff); */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.70rem;
+  width: 80px;
+  height: 80px;
+  padding: 2rem;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
+}
+/* .gridSpan {
+    grid-column: span 2;
+    justify-self: center;
+}*/
+@media only screen and (max-width: 768px) {
+  .weatherContainer {
+    display: block;
+  }
 }
 
 @media only screen and (max-width: 400px) {
@@ -80,9 +100,15 @@ button:focus {
   button {
     margin-top: 5px;
   }
+
+  .description {
+    grid-template-columns: repeat(3, auto);
+  }
 }
 
-.noWeatherIcon {
-  width: 50px;
-  background-color: #3277d6;
+@media only screen and (max-width: 300px) {
+  .description {
+    grid-template-columns: repeat(2, auto);
+  }
 }
+

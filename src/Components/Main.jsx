@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 
-import ChangeBackground from "./ChangeBackground";
+import WeatherIcon from "./WeatherIcon";
 import noWeather from "../Images/noWeather.png";
+
 const useWeatherFetch = (location) => {
   const [weather, setWeather] = useState(null);
 
@@ -13,9 +14,9 @@ const useWeatherFetch = (location) => {
         .then((res) => res.json())
         .then((data) => {
           setWeather(data);
-          console.log(data);
+          /* console.log(data); */
         })
-        .catch(() => console.log("Failed to load weather data"));
+        .catch(() => console.error("Failed to load weather data"));
     }
   };
 
@@ -68,33 +69,36 @@ const WeatherValues = ({ weather }) => {
   } = weather || {};
 
   return (
-    <div className="weatherValues">
-      <div className="weatherIcon">
+    <div className="weatherContainer">
+      <div className="weatherImg">
         {weatherDetails.main ? (
-          <ChangeBackground condition={weatherDetails.main} />
+          <WeatherIcon condition={weatherDetails.main} />
         ) : (
           <img src={noWeather} alt="empty cloud" />
         )}
       </div>
-
-      <p>Description: {weatherDetails.description || "-"}</p>
-      <p>Search: {name}</p>
-      <p>Country: {country || "-"}</p>
-      <p>Temperature: {temp || "-"}°C</p>
-      <p>Wind speed: {speed || "-"} m/s</p>
-      <p>
-        Wind direction: {deg || "0"}° {deg ? getWindDirection(deg) : "-"}
-      </p>
-      <p>Humidity: {humidity || "-"}%</p>
-      <p>Pressure: {pressure || "-"} hPa</p>
-      <p>
-        Visibility: {visibility !== "-" ? visibility / 1000 : visibility} km{" "}
-        {visibility !== "-" ? `(${getVisibilityDescription(visibility)})` : ""}
-      </p>
-      <p>
-        Cloudiness: {cloudiness || "0"}%{" "}
-        {cloudiness ? `(${getCloudinessDescription(cloudiness)})` : ""}
-      </p>
+      <div className="description">
+        <p>Description: {weatherDetails.description || "-"}</p>
+        <p>Search: {name}</p>
+        <p>Country: {country || "-"}</p>
+        <p>Temperature: {temp || "-"}°C</p>
+        <p>Wind speed: {speed || "-"} m/s</p>
+        <p>
+          Wind direction: {deg || "0"}° {deg ? getWindDirection(deg) : "-"}
+        </p>
+        <p>Humidity: {humidity || "-"}%</p>
+        <p>Pressure: {pressure || "-"} hPa</p>
+        <p>
+          Visibility: {visibility !== "-" ? visibility / 1000 : visibility} km{" "}
+          {visibility !== "-"
+            ? `(${getVisibilityDescription(visibility)})`
+            : ""}
+        </p>
+        <p>
+          Cloudiness: {cloudiness || "0"}%{" "}
+          {cloudiness ? `(${getCloudinessDescription(cloudiness)})` : ""}
+        </p>
+      </div>
     </div>
   );
 };
@@ -102,13 +106,11 @@ const WeatherValues = ({ weather }) => {
 const Main = () => {
   const [location, setLocation] = useState("");
   const { weather, fetchWeatherData } = useWeatherFetch(location);
-  const [checkCondition, setCheckCondition] = useState(false);
-
+  
   const handleOnSubmit = (e) => {
     e.preventDefault();
     fetchWeatherData();
     setLocation("");
-    setCheckCondition(true);
   };
 
   return (
@@ -126,8 +128,7 @@ const Main = () => {
       </form>
 
       <WeatherValues weather={weather} />
-
-      {checkCondition && !weather && (
+      {weather?.cod === "404" && (
         <p className="errorMessage">
           No weather data found for the given location
         </p>
