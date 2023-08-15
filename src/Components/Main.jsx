@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import noWeather from "../Images/noWeather.png";
 
+import ChangeBackground from "./ChangeBackground";
+import noWeather from "../Images/noWeather.png";
 const useWeatherFetch = (location) => {
   const [weather, setWeather] = useState(null);
 
@@ -25,7 +26,6 @@ const getWindDirection = (degree) => {
   const index = Math.round((degree % 360) / 45);
   return directions[index];
 };
-
 
 const getVisibilityDescription = (visibility) => {
   switch (true) {
@@ -58,39 +58,44 @@ const getCloudinessDescription = (cloudiness) => {
 
 const WeatherValues = ({ weather }) => {
   const {
-      name = "-",
-      sys: { country } = {},
-      main: { temp, humidity, pressure } = {},
-      wind: { speed, deg } = {},
-      visibility = "-",
-      clouds: { all: cloudiness } = {},
-      weather: [weatherDetails = {}] = []
+    name = "-",
+    sys: { country } = {},
+    main: { temp, humidity, pressure } = {},
+    wind: { speed, deg } = {},
+    visibility = "-",
+    clouds: { all: cloudiness } = {},
+    weather: [weatherDetails = {}] = [],
   } = weather || {};
 
   return (
-      <div className="weatherValues">
-          {weatherDetails.icon ? (
-              <div className="weatherIcon">
-                  <img
-                      src={`https://openweathermap.org/img/wn/${weatherDetails.icon}.png`}
-                      alt="Weather Icon"
-                  />
-              </div>
-          ) : (
-              <img src={noWeather} alt="No weather icon" className="noWeatherIcon" />
-          )}
-          <p>Description: {weatherDetails.description || "-"}</p>
-          <p>Search: {name}</p>
-          <p>Country: {country || "-"}</p>
-          <p>Temperature: {temp || "-"}°C</p>
-          <p>Wind speed: {speed || "-"} m/s</p>
-          <p>Wind direction: {deg || "0"}° {deg ? getWindDirection(deg) : "-"}</p>
-          <p>Humidity: {humidity || "-"}%</p>
-          <p>Pressure: {pressure || "-"} hPa</p>
-          <p>Visibility: {visibility !== "-" ? visibility / 1000 : visibility} km {visibility !== "-" ? `(${getVisibilityDescription(visibility)})` : ""}</p>
-          <p>Cloudiness: {cloudiness || "0"}% {cloudiness ? `(${getCloudinessDescription(cloudiness)})` : ""}</p>
-          <p>Visual display of current weather:</p>
+    <div className="weatherValues">
+      <div className="weatherIcon">
+        {weatherDetails.main ? (
+          <ChangeBackground condition={weatherDetails.main} />
+        ) : (
+          <img src={noWeather} alt="empty cloud" />
+        )}
       </div>
+
+      <p>Description: {weatherDetails.description || "-"}</p>
+      <p>Search: {name}</p>
+      <p>Country: {country || "-"}</p>
+      <p>Temperature: {temp || "-"}°C</p>
+      <p>Wind speed: {speed || "-"} m/s</p>
+      <p>
+        Wind direction: {deg || "0"}° {deg ? getWindDirection(deg) : "-"}
+      </p>
+      <p>Humidity: {humidity || "-"}%</p>
+      <p>Pressure: {pressure || "-"} hPa</p>
+      <p>
+        Visibility: {visibility !== "-" ? visibility / 1000 : visibility} km{" "}
+        {visibility !== "-" ? `(${getVisibilityDescription(visibility)})` : ""}
+      </p>
+      <p>
+        Cloudiness: {cloudiness || "0"}%{" "}
+        {cloudiness ? `(${getCloudinessDescription(cloudiness)})` : ""}
+      </p>
+    </div>
   );
 };
 
@@ -101,7 +106,7 @@ const Main = () => {
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    fetchWeatherData(); 
+    fetchWeatherData();
     setLocation("");
     setCheckCondition(true);
   };
@@ -122,9 +127,7 @@ const Main = () => {
 
       <WeatherValues weather={weather} />
 
-      {
-      checkCondition && !weather && 
-      (
+      {checkCondition && !weather && (
         <p className="errorMessage">
           No weather data found for the given location
         </p>
